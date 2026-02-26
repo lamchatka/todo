@@ -3,6 +3,8 @@ import TodoItem from "../components/TodoItem"
 const TodoList = (props) => {
   const {
     tasks = [],
+    firstIncompleteTaskRef,
+    firstIncompleteTaskId,
     onDeleteTaskButtonClick,
     onChangeTaskComplete,
     filteredTasks,
@@ -25,6 +27,7 @@ const TodoList = (props) => {
             <TodoItem
               className='todo__item'
               key={task.id}
+              ref={task.id === firstIncompleteTaskId ? firstIncompleteTaskRef : null}
               onDeleteTaskButtonClick={onDeleteTaskButtonClick}
               onChangeTaskComplete={onChangeTaskComplete}
               {...task}
