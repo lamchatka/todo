@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 
 import AddTaskForm from "../components/AddTaskForm"
 import SearchTaskForm from "../components/SearchTaskForm"
@@ -25,23 +25,23 @@ const Todo = () => {
 
   const newTaskInputRef = useRef(null)
   const firstIncompleteTaskRef = useRef(null)
-  const firstIncompleteTaskId = tasks.find(({ status }) => !status)?.id
+  const firstIncompleteTaskId = tasks.find(({ status }) => !status)?.id // useMemo
 
-  const deleteAllTasks = () => {
+  const deleteAllTasks = useCallback(() => {
     const isConfirmed = confirm('Are you sure you want to delete all?')
 
     if (isConfirmed) {
       setTasks([])
     }
-  }
+  }, [])
 
-  const deleteTask = (taskId) => {
+  const deleteTask = useCallback((taskId) => {
     setTasks(
       tasks.filter((task) => task.id !== taskId)
     )
-  }
+  }, [tasks])
 
-  const toggleTaskComplete = (taskId, status) => {
+  const toggleTaskComplete = useCallback((taskId, status) => {
     setTasks(
       tasks.map((task) => {
         if (task.id === taskId) {
@@ -51,9 +51,9 @@ const Todo = () => {
         return task
       })
     )
-  }
+  }, [tasks])
 
-  const addTask = () => {
+  const addTask = useCallback(() => { // useCallback
     if (newTaskTitle.trim().length > 0) {
       const newTask = {
         id: crypto?.randomUUID() ?? Date.now().toString(),
@@ -61,19 +61,24 @@ const Todo = () => {
         status: false,
       }
 
-      setTasks([...tasks, newTask])
+      setTasks((prevTasks) => [...prevTasks, newTask])
       setNewTaskTitle('')
       setSearchQuery('')
       newTaskInputRef.current.focus()
     }
-  }
+  }, [newTaskTitle])
 
-  const doneTasks = tasks.filter(({ status }) => status).length;
+  const doneTasks = useMemo(() => {
+    return tasks.filter(({ status }) => status).length
+  }, [tasks])
 
-  const clearSearchQuery = searchQuery.trim().toLowerCase()
-  const filteredTasks = clearSearchQuery.length > 0
+  const filteredTasks = useMemo(() => {
+    const clearSearchQuery = searchQuery.trim().toLowerCase()
+
+    return clearSearchQuery.length > 0
     ? tasks.filter(({ title }) => title.toLowerCase().includes(clearSearchQuery))
     : null
+  }, [tasks, searchQuery])
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks))
