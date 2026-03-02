@@ -3,10 +3,7 @@ import Field from "./Field";
 import { TasksContext } from "../context/TasksContext";
 
 const SearchTaskForm = () => {
-  const {
-    searchQuery,
-    setSearchQuery,
-  } = useContext(TasksContext);
+  const { searchQuery, setSearchQuery } = useContext(TasksContext);
 
   return (
     <form className="todo__form" onSubmit={(event) => event.preventDefault()}>
@@ -18,8 +15,8 @@ const SearchTaskForm = () => {
         value={searchQuery}
         onInput={({ target }) => setSearchQuery(target.value)}
       />
-  </form>
+    </form>
   );
-}
+};
 
-export default SearchTaskForm
+export default SearchTaskForm;

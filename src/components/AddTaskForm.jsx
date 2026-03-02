@@ -1,20 +1,16 @@
 import { useContext } from "react";
-import Button from "../components/Button"
-import Field from "../components/Field"
+import Button from "../components/Button";
+import Field from "../components/Field";
 import { TasksContext } from "../context/TasksContext";
 
 const AddTaskForm = () => {
-  const {
-    addTask,
-    newTaskInputRef,
-    newTaskTitle,
-    setNewTaskTitle
-  } = useContext(TasksContext);
+  const { addTask, newTaskInputRef, newTaskTitle, setNewTaskTitle } =
+    useContext(TasksContext);
 
   const onSubmit = (event) => {
     event.preventDefault();
     addTask();
-  }
+  };
 
   return (
     <form className="todo__form" onSubmit={onSubmit}>
@@ -27,9 +23,8 @@ const AddTaskForm = () => {
         ref={newTaskInputRef}
       />
       <Button type="submit">Add</Button>
-  </form>
+    </form>
   );
+};
 
-}
-
-export default AddTaskForm
+export default AddTaskForm;

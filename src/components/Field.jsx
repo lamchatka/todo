@@ -1,9 +1,9 @@
 const Field = (props) => {
   const {
-    className = '',
+    className = "",
     id,
     label,
-    type = 'text',
+    type = "text",
     value,
     onInput,
     ref,
@@ -11,10 +11,7 @@ const Field = (props) => {
 
   return (
     <div className={`field ${className}`}>
-      <label
-        className="field__label"
-        htmlFor={id}
-      >
+      <label className="field__label" htmlFor={id}>
         {label}
       </label>
       <input
@@ -29,6 +26,6 @@ const Field = (props) => {
       />
     </div>
   );
-}
+};
 
-export default Field
+export default Field;
