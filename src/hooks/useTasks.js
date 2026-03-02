@@ -2,15 +2,14 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import useTasksLocalStorage from "./useTasksLocalStorage";
 
 const useTasks = () => {
-  const {
-    saveTasks,
-    savedTasks
-  } = useTasksLocalStorage();
+  const { saveTasks, savedTasks } = useTasksLocalStorage();
 
-  const [tasks, setTasks] = useState(savedTasks ?? [
+  const [tasks, setTasks] = useState(
+    savedTasks ?? [
       { id: "task-1", title: "Купить молоко", status: false },
       { id: "task-2", title: "Погладить кота", status: true },
-    ]);
+    ]
+  );
 
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -47,20 +46,18 @@ const useTasks = () => {
     [tasks]
   );
 
-  const addTask = useCallback(() => {
-    if (newTaskTitle.trim().length > 0) {
-      const newTask = {
-        id: crypto?.randomUUID() ?? Date.now().toString(),
-        title: newTaskTitle,
-        status: false,
-      };
+  const addTask = useCallback((title) => {
+    const newTask = {
+      id: crypto?.randomUUID() ?? Date.now().toString(),
+      title: title,
+      status: false,
+    };
 
-      setTasks((prevTasks) => [...prevTasks, newTask]);
-      setNewTaskTitle("");
-      setSearchQuery("");
-      newTaskInputRef.current.focus();
-    }
-  }, [newTaskTitle]);
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+    setNewTaskTitle("");
+    setSearchQuery("");
+    newTaskInputRef.current.focus();
+  });
 
   const filteredTasks = useMemo(() => {
     const clearSearchQuery = searchQuery.trim().toLowerCase();
@@ -73,8 +70,8 @@ const useTasks = () => {
   }, [tasks, searchQuery]);
 
   useEffect(() => {
-    saveTasks(tasks)
-  }, [tasks])
+    saveTasks(tasks);
+  }, [tasks]);
 
   useEffect(() => {
     newTaskInputRef.current.focus();
